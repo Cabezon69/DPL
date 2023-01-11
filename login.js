@@ -1,14 +1,6 @@
-const mongoose = require("mongoose");
 const express = require("express");
 const session = require("express-session");
 const path = require("path");
-
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "login-socket",
-});
 
 const app = express();
 
@@ -37,25 +29,16 @@ app.post("/auth", function (request, response) {
   // Ensure the input fields exists and are not empty
   if (username && password) {
     // Execute SQL query that'll select the account from the database based on the specified username and password
-    connection.query(
-      "SELECT * FROM accounts WHERE username = ? AND password = ?",
-      [username, password],
-      function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
-        // If the account exists
-        if (results.length > 0) {
-          // Authenticate the user
-          request.session.loggedin = true;
-          request.session.username = username;
-          // Redirect to home page
-          response.redirect("/home");
-        } else {
-          response.send("Usuario y/o Contraseña Incorrecta");
-        }
-        response.end();
-      }
-    );
+    if (username == "damian" && password == "123") {
+      // Authenticate the user
+      request.session.loggedin = true;
+      request.session.username = username;
+      // Redirect to home page
+      response.redirect("/home");
+    } else {
+      response.send("Usuario y/o Contraseña Incorrecta");
+    }
+    response.end();
   } else {
     response.send("Por favor ingresa Usuario y Contraseña!");
     response.end();
